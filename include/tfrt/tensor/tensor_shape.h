@@ -21,9 +21,9 @@
 
 #include <array>
 #include <cstdint>
+#include <optional>
 
 #include "llvm/ADT/ArrayRef.h"
-#include "llvm/ADT/None.h"
 #include "llvm/ADT/SmallVector.h"
 #include "llvm/Support/Error.h"
 #include "tfrt/support/forward_decls.h"
@@ -210,12 +210,12 @@ class PartialTensorShape {
   // Create a PartialTensorShape with the dimensions. If rank itself is unknown,
   // (dims is std::nullopt), this is an unranked. Else, it is ranked where each
   // dimensions could still be unknown (indicated by kUnknownDimSize) as well.
-  explicit PartialTensorShape(Optional<ArrayRef<Index>> dims);
+  explicit PartialTensorShape(std::optional<ArrayRef<Index>> dims);
 
   // Returns the shape of the tensor.
   // If unranked, return std::nullopt
   // If ranked, return dimensions (including kUnknownDimSize for unknown dim).
-  Optional<ArrayRef<Index>> GetShape() const;
+  std::optional<ArrayRef<Index>> GetShape() const;
 
   // Returns true if the rank is unknown. Else, returns false.
   bool IsUnranked() const;
@@ -244,7 +244,7 @@ class PartialTensorShape {
   // We store dims in SmallVector here since PartialTensorShape is designed
   // for use in shape computations where we could alter the shape by adding/
   // removing dimensions.
-  Optional<llvm::SmallVector<Index, 4>> dims_;
+  std::optional<llvm::SmallVector<Index, 4>> dims_;
 };
 
 //
